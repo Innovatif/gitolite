@@ -63,8 +63,9 @@
 <p>Please make sure you understand the following points first.</p>
 
 <ul>
-<li><p>gitolite runs as a single (real) user on a server, and is invoked via ssh.
-Traditionally, this "hosting user" is "git" or "gitolite".</p>
+<li><p>gitolite runs as a single (real) user on a server, and is invoked via ssh
+(or, less commonly, via http).  Traditionally, this "hosting user" is
+"git" or "gitolite".</p>
 
 <ul>
 <li>there is <em>usually</em> only one hosting user per server (machine), but
@@ -150,7 +151,8 @@ your admin csh is not posix compatible</li>
 normally; see the <code>$GIT_PATH</code> variable in the "rc" file</li>
 </ul></li>
 <li>perl (but since git requires it anyway, you probably have it)</li>
-<li>openssh or any ssh that can understand the <code>authorized_keys</code> file format</li>
+<li>openssh or any ssh that can understand the <code>authorized_keys</code> file format
+(probably optional if you're using the http backend)</li>
 </ul>
 
 <p><a name="_technical_skills"></a></p>

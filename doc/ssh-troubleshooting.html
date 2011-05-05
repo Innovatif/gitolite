@@ -147,6 +147,8 @@ check <code>/</code> and <code>/home</code> also.</p></li>
 <li><p>while you're doing this, make sure the owner and group info for each of
 these components are correct.  <code>ls -ald ~ ~/.ssh ~/.ssh/authorized_keys</code>
 will tell you what they are.</p></li>
+<li><p>some OSs/distributions require that the "git" user should have a password
+and/or not be a locked account.  You may want to check that as well.</p></li>
 <li><p>if all that fails, log onto the server as root, <code>cd /var/log</code>, and look
 for a file called <code>auth.log</code> or <code>secure</code> or some such name.  Look inside
 this file for messages matching the approximate time of your last attempt
