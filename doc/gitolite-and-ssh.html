@@ -104,8 +104,12 @@ forcibly run this command instead".</p>
 <code>authorized_keys</code> file, each line can have a <em>different</em> set of options
 and <code>command=</code> values.</p>
 
+<p>Without this <code>command=</code> option, the ssh daemon will simply give you a
+shell, which is not what we want for our gitolite keys (although we may
+well have other keys which we use to get a shell).</p>
+
 <p><strong>This is the backbone of what makes gitolite work; please make sure you
-understand this</strong></p></li>
+understand this</strong>.</p></li>
 </ul>
 
 <p><a name="_how_does_gitolite_use_all_this_ssh_magic_"></a></p>
