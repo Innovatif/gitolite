@@ -449,30 +449,25 @@ and re-add identities for it to pick up the renamed ones correctly</p></li>
 
 <h4>typical cause(s)</h4>
 
-<p>Here are some likely causes of keys that are expected to have gitolite access
-getting a shell instead.</p>
+<p>For server-based installs (i.e., not the 'from-client' install mode), the
+admin often has passwordless shell access to <code>git@server</code> already, and then
+used that same key to get access to gitolite (i.e., copied that same pubkey as
+YourName.pub and gave it to gitolite in some way).</p>
 
-<ul>
-<li><p>for server-based installs (i.e., not the 'from-client' install mode), the
-admin often has passwordless shell access to <code>git@server</code> already, and
-then used that same key to get access to gitolite (i.e., copied that same
-pubkey as YourName.pub and gave it to gitolite in some way).</p>
+<p>As a result, the same key appears twice in the authkeys file now, and since
+the ssh server will always use the first match, the second occurrence (which
+invokes gitolite) is ignored.</p>
 
-<p>As a result, the same key appears twice in the authkeys file now, and
-since the ssh server will always use the first match, the second
-occurrence (which invokes gitolite) is ignored.</p></li>
-<li><p>to fix this, you have to use a different keypair for gitolite access.  The
-best way to do this is to create a new keypair, copy the pubkey to the
-server as YourName.pub, then run <code>~/.gitolite/src/gl-dont-panic
-YourName.pub</code> on the server.  Remember to adjust your agent identities
-using ssh-add -D and ssh-add if you're using ssh-agent, otherwise these
-new keys may not work.</p></li>
-</ul>
+<p>To fix this, you have to use a different keypair for gitolite access.  The
+best way to do this is to create a new keypair, copy the pubkey to the server
+as YourName.pub, then run <code>~/.gitolite/src/gl-dont-panic YourName.pub</code> on the
+server.  Remember to adjust your agent identities using ssh-add -D and ssh-add
+if you're using ssh-agent, otherwise these new keys may not work.</p>
 
-<p>In addition, for the 'from-client' install method, the admin may have used the
-wrong URL syntax, having <strong>utterly failed</strong> to read/heed the message that
+<p>[In addition, for the 'from-client' install method, the admin may have used
+the wrong URL syntax, having <strong>utterly failed</strong> to read/heed the message that
 shows up at the end of running <code>gl-easy-install</code>.  In this case the keys are
-different, but the wrong one is being used.</p>
+different, but the wrong one is being used.]</p>
 
 <p><a name="_appendix_3_ssh_client_may_not_be_offering_the_right_key"></a></p>
 
