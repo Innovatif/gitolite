@@ -432,21 +432,26 @@
 <br>
 <br>
 <b>doc/ssh-troubleshooting.html</b><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_common_ssh_asks_for_a_password">(common) ssh asks for a password</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_problems_when_using_package_root_or_non_root_install_methods">problems when using package, root, or non-root install methods</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_problems_when_using_the_from_client_install_method">problems when using the "from-client" install method</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_sidebar_why_two_keys_on_client_for_the_admin">(sidebar) why two keys on client for the admin</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_bypassing_gitolite_without_intending_to">bypassing gitolite without intending to</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_basic_ssh_troubleshooting_for_the_admin">basic ssh troubleshooting for the admin</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_problems_with_using_non_openssh_public_keys">problems with using non-openssh public keys</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_windows_issues">windows issues</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_details">details</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_files_on_the_server">files on the server</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_files_on_client">files on client</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_some_other_tips_and_tricks">some other tips and tricks</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_IMPORTANT_READ_THIS_FIRST">IMPORTANT -- READ THIS FIRST</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_caveats">caveats</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_naming_conventions_used">naming conventions used</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_taking_stock_relevant_files_and_directories">taking stock -- relevant files and directories</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_normal_gitolite_key_handling">normal gitolite key handling</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_Other_resources_">(Other resources)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_common_problems">common problems</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_step_by_step">step by step</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_random_tips_tricks_and_notes">random tips, tricks, and notes</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_giving_shell_access_to_gitolite_users">giving shell access to gitolite users</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_losing_your_admin_key">losing your admin key</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_simulating_ssh_copy_id">simulating ssh-copy-id</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_problems_with_using_non_openssh_public_keys">problems with using non-openssh public keys</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_windows_issues">windows issues</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_appendix_1_ssh_daemon_asks_for_a_password">appendix 1: ssh daemon asks for a password</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_appendix_2_which_key_is_which_running_sshkeys_lint">appendix 2: which key is which -- running sshkeys-lint</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_typical_cause_s_">typical cause(s)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_appendix_3_ssh_client_may_not_be_offering_the_right_key">appendix 3: ssh client may not be offering the right key</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_appendix_4_making_git_use_the_right_key_using_ssh_config_">appendix 4: making git use the right key using <code>~/.ssh/config</code></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sitaramc.github.com/gitolite/doc/ssh-troubleshooting.html#_appendix_5_why_bypassing_gitolite_causes_a_problem">appendix 5: why bypassing gitolite causes a problem</a><br>
 <br>
 <br>
 <b>doc/gitolite-and-ssh.html</b><br>
