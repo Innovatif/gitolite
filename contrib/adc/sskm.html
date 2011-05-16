@@ -66,8 +66,8 @@ maybe <code>@home</code>), there is no way to specify where the key should go, s
 goes directly into <code>keydir/</code>.</p>
 
 <p>More importantly, deleting a key that was in a specific folder, and then
-undeleting it, will cause it effectively move to the root of the key store
-(i.e., the <code>keydir</code> directory in the gitolite-admin repo).</p></li>
+undeleting it, will cause it to effectively move to the root of the key
+store (i.e., the <code>keydir</code> directory in the gitolite-admin repo).</p></li>
 </ul>
 
 <p><a name="_important_notes_for_the_user"></a></p>
@@ -192,7 +192,8 @@ was marked for deletion and it will undelete itself.</p>
 <ul>
 <li>use the <code>list</code> command to look at your keyids and choose a new, unused one
 for the key you are going to add</li>
-<li>using any active key, <code>add</code> the new key</li>
+<li>using any active key, <code>add</code> the new key, and don't forget to supply the
+keyid!</li>
 <li>using the new (marked but not yet active) key, use the <code>confirm-add</code>
 command</li>
 </ul>
