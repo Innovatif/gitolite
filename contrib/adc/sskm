@@ -88,7 +88,7 @@ if ($keytype eq '') {
     if ($operation eq 'add') {
         print STDERR "please supply the new key on STDIN.  (I recommend you
         don't try to do this interactively, but use a pipe)\n";
-        kf_add($gl_user, $keyid, <>);
+        kf_add($gl_user, $keyid, safe_stdin());
     } elsif ($operation eq 'del') {
         kf_del($gl_user, $keyid);
     } elsif ($operation eq 'confirm-del') {
@@ -132,8 +132,18 @@ sub cd_temp_clone {
 
 sub fingerprint {
     my $fp = `ssh-keygen -l -f $_[0]`;
-    $fp = $1 if $fp =~ /([0-9a-f]+:\S+)/;
-    return $fp;
+    die "does not seem to be a valid pubkey\n" unless $fp =~ /(([0-9a-f]+:)+[0-9a-f]+ )/i;
+    return $1;
+}
+
+sub safe_stdin {
+    # read one line from STDIN
+    my $data;
+    my $ret = read STDIN, $data, 4096;
+    # current pubkeys are approx 400 bytes so we go a little overboard
+    die "could not read pubkey data" . (defined($ret) ? "" : ": $!") . "\n" unless $ret;
+    die "pubkey data seems to have more than one line\n" if $data =~ /\n./;
+    return $data;
 }
 
 sub highlander {
@@ -156,15 +166,14 @@ The keys are:
 }
 
 sub kf_add {
-    my($gl_user, $keyid, @keymaterial) = @_;
-    die "key material has more than one line; I can't handle this\n" if @keymaterial > 1;
+    my($gl_user, $keyid, $keymaterial) = @_;
 
     # add a new "marked for addition" key for $gl_user.
     cd_temp_clone();
     chdir("keydir");
 
     mkdir("ZZZ-marked");
-    wrap_print("ZZZ-marked/ZZZ-marked-for-add-$gl_user$keyid.pub", @keymaterial);
+    wrap_print("ZZZ-marked/ZZZ-marked-for-add-$gl_user$keyid.pub", $keymaterial);
     system("git", "add", ".") and die "git add failed\n";
     my $fp = fingerprint("ZZZ-marked/ZZZ-marked-for-add-$gl_user$keyid.pub");
     system("git", "commit", "-m", "kmss: add $gl_user$keyid ($fp)") and die "git commit failed\n";
