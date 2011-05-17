@@ -176,7 +176,7 @@ sub kf_add {
     wrap_print("ZZZ-marked/ZZZ-marked-for-add-$gl_user$keyid.pub", $keymaterial);
     system("git", "add", ".") and die "git add failed\n";
     my $fp = fingerprint("ZZZ-marked/ZZZ-marked-for-add-$gl_user$keyid.pub");
-    system("git", "commit", "-m", "kmss: add $gl_user$keyid ($fp)") and die "git commit failed\n";
+    system("git", "commit", "-m", "sskm: add $gl_user$keyid ($fp)") and die "git commit failed\n";
     system("env", "GL_BYPASS_UPDATE_HOOK=1", "git", "push") and die "git push failed\n";
 }
 
@@ -192,10 +192,10 @@ sub kf_confirm_add {
     my $fp = fingerprint($mfa[0]);
     if ($pk[0]) {
         system("git", "mv", "-f", $mfa[0], $pk[0]);
-        system("git", "commit", "-m", "kmss: confirm-add (replace) $pk[0] ($fp)") and die "git commit failed\n";
+        system("git", "commit", "-m", "sskm: confirm-add (replace) $pk[0] ($fp)") and die "git commit failed\n";
     } else {
         system("git", "mv", "-f", $mfa[0], "$gl_user$keyid.pub");
-        system("git", "commit", "-m", "kmss: confirm-add $gl_user$keyid ($fp)") and die "git commit failed\n";
+        system("git", "commit", "-m", "sskm: confirm-add $gl_user$keyid ($fp)") and die "git commit failed\n";
     }
     system("env", "GL_BYPASS_UPDATE_HOOK=1", "git", "push") and die "git push failed\n";
 }
@@ -210,7 +210,7 @@ sub kf_undo_add {
 
     my $fp = fingerprint($mfa[0]);
     system("git", "rm", $mfa[0]);
-    system("git", "commit", "-m", "kmss: undo-add $gl_user$keyid ($fp)") and die "git commit failed\n";
+    system("git", "commit", "-m", "sskm: undo-add $gl_user$keyid ($fp)") and die "git commit failed\n";
     system("env", "GL_BYPASS_UPDATE_HOOK=1", "git", "push") and die "git push failed\n";
 }
 
@@ -225,7 +225,7 @@ sub kf_del {
 
     my $fp = fingerprint($pk[0]);
     system("git", "mv", $pk[0], "ZZZ-marked/ZZZ-marked-for-del-$gl_user$keyid.pub") and die "git mv failed\n";
-    system("git", "commit", "-m", "kmss: del $pk[0] ($fp)") and die "git commit failed\n";
+    system("git", "commit", "-m", "sskm: del $pk[0] ($fp)") and die "git commit failed\n";
     system("env", "GL_BYPASS_UPDATE_HOOK=1", "git", "push") and die "git push failed\n";
 }
 
@@ -238,7 +238,7 @@ sub kf_confirm_del {
 
     my $fp = fingerprint($mfd[0]);
     system("git", "rm", $mfd[0]);
-    system("git", "commit", "-m", "kmss: confirm-del $gl_user$keyid ($fp)") and die "git commit failed\n";
+    system("git", "commit", "-m", "sskm: confirm-del $gl_user$keyid ($fp)") and die "git commit failed\n";
     system("env", "GL_BYPASS_UPDATE_HOOK=1", "git", "push") and die "git push failed\n";
 }
 
@@ -261,6 +261,6 @@ actually delete it.
 
     my $fp = fingerprint($mfd[0]);
     system("git", "mv", "-f", $mfd[0], "$gl_user$keyid.pub" );
-    system("git", "commit", "-m", "kmss: undo-del $gl_user$keyid ($fp)") and die "git commit failed\n";
+    system("git", "commit", "-m", "sskm: undo-del $gl_user$keyid ($fp)") and die "git commit failed\n";
     system("env", "GL_BYPASS_UPDATE_HOOK=1", "git", "push") and die "git push failed\n";
 }
