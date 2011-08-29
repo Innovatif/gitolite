@@ -25,9 +25,9 @@ $GL_CONF_COMPILED="$GL_ADMINDIR/conf/gitolite.conf-compiled.pm";
 # ------------------------------------------------------------------------------
 # most often used/changed variables
 # ------------------------------------------------------------------------------
-$GL_WILDREPOS = 0;
+$GL_WILDREPOS = 1;
 $PROJECTS_LIST = $ENV{HOME} . "/projects.list";
-$REPO_UMASK = 0077;
+$REPO_UMASK = 0007;
 
 # ------------------------------------------------------------------------------
 # variables with an efficiency/performance impact
@@ -54,7 +54,7 @@ $RSYNC_BASE = "";
 $SVNSERVE = "";
 # $UPDATE_CHAINS_TO = "hooks/update.secondary";
 # $ADMIN_POST_UPDATE_CHAINS_TO = "hooks/post-update.secondary";
-# $GL_ADC_PATH = "";
+$GL_ADC_PATH = "$GL_ADMINDIR/adc";
 # $GL_GET_MEMBERSHIPS_PGM = "/usr/local/bin/expand-ldap-user-to-groups"
 # $GL_HTTP_ANON_USER = "mob";
 
@@ -71,13 +71,13 @@ $GL_WILDREPOS_PERM_CATS = "READERS WRITERS";
 # ------------------------------------------------------------------------------
 # rarely changed variables
 # ------------------------------------------------------------------------------
-$GL_LOGT="$GL_ADMINDIR/logs/gitolite-%y-%m.log";
+$GL_LOGT="/var/log/gitolite/gitolite-%y-%m-%d.log";
 # $GL_PERFLOGT="$GL_ADMINDIR/logs/perf-gitolite-%y-%m.log";
 
 # ------------------------------------------------------------------------------
 # variables that should NOT be changed after the install step completes
 # ------------------------------------------------------------------------------
-$REPO_BASE="repositories";
+$REPO_BASE="/var/www/virtual";
 
 # ------------------------------------------------------------------------------
 # DO NOT TOUCH ANY THING AFTER THIS LINE
