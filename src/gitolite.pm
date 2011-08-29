@@ -9,6 +9,7 @@ use Exporter 'import';
     check_repo_write_enabled
     cli_repo_rights
     dbg
+    dos2unix
     list_phy_repos
     ln_sf
     log_it
@@ -21,11 +22,16 @@ use Exporter 'import';
     setup_git_configs
     setup_gitweb_access
     shell_out
+    slurp
     special_cmd
     try_adc
     wrap_chdir
     wrap_open
     wrap_print
+
+    mirror_mode
+    mirror_listslaves
+    mirror_redirectOK
 );
 @EXPORT_OK = qw(
     %repos
@@ -140,6 +146,12 @@ sub dbg {
     }
 }
 
+sub dos2unix {
+    # WARNING: when calling this, make sure you supply a list context
+    s/\r\n/\n/g for @_;
+    return @_;
+}
+
 sub log_it {
     my ($ip, $logmsg);
     open my $log_fh, ">>", $ENV{GL_LOG} or die "open log failed: $!\n";
@@ -152,7 +164,8 @@ sub log_it {
     $logmsg .= "\t@_" if @_;
     # erm... this is hard to explain so just see the commit message ok?
     $logmsg =~ s/([\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\xFF]+)/sprintf "<<hex(%*v02X)>>","",$1/ge;
-    print $log_fh "$ENV{GL_TS}\t$ENV{GL_USER}\t$ip\t$logmsg\n";
+    my $user = $ENV{GL_USER} || "(no user)";
+    print $log_fh "$ENV{GL_TS}\t$user\t$ip\t$logmsg\n";
     close $log_fh or die "close log failed: $!\n";
 }
 
@@ -313,8 +326,7 @@ sub new_wild_repo {
         my %perm_cats;
 
         if ($user and            -f "$REPO_BASE/$repo.git/gl-perms") {
-            my $fh = wrap_open("<", "$REPO_BASE/$repo.git/gl-perms");
-            my $perms = join ("", <$fh>);
+            my ($perms) = dos2unix(slurp("$REPO_BASE/$repo.git/gl-perms"));
             # discard comments
             $perms =~ s/#.*//g;
             # convert R and RW to the actual category names in the config file
@@ -417,12 +429,24 @@ sub setup_git_configs
 {
     my ($repo, $git_configs_p) = @_;
 
-    while ( my ($key, $value) = each(%{ $git_configs_p->{$repo} }) ) {
-        if ($value ne "") {
-            $value =~ s/^"(.*)"$/$1/;
-            system("git", "config", $key, $value);
-        } else {
-            system("git", "config", "--unset-all", $key);
+    # new_wild calls us without checking!
+    return unless $git_configs_p->{$repo};
+
+    # git_configs_p is a ref to a hash whose elements look like
+    # {"reponame"}{sequence_number}{"key"} = "value";
+
+    my %rch = %{ $git_configs_p->{$repo} };
+    # %rch has elements that look like {sequence_number}{"key"} = "value"
+    for my $seq (sort { $a <=> $b } keys %rch) {
+        # and the final step is the repo config: {"key"} = "value"
+        my $rc = $rch{$seq};
+        while ( my ($key, $value) = each(%{ $rc }) ) {
+            if ($value ne "") {
+                $value =~ s/^['"](.*)["']$/$1/;
+                system("git", "config", $key, $value);
+            } else {
+                system("git", "config", "--unset-all", $key);
+            }
         }
     }
 }
@@ -642,13 +666,18 @@ sub parse_acl
     # the old "convenience copy" thing.  Now on steroids :)
 
     # note that when copying the @all entry, we retain the destination name as
-    # @all; we dont change it to $repo or $gl_user
+    # @all; we dont change it to $repo or $gl_user.  We need to maintain this
+    # distinction to be able to print the @/#/& prefixes in the report output
+    # (see doc/report-output.mkd)
     for my $r ('@all', @repo_plus) {
         my $dr = $repo; $dr = '@all' if $r eq '@all';
         $repos{$dr}{DELETE_IS_D} = 1 if $repos{$r}{DELETE_IS_D};
         $repos{$dr}{CREATE_IS_C} = 1 if $repos{$r}{CREATE_IS_C};
         $repos{$dr}{NAME_LIMITS} = 1 if $repos{$r}{NAME_LIMITS};
-        $git_configs{$dr} = $git_configs{$r} if $git_configs{$r};
+        # this needs to copy the key-value pairs from RHS to LHS, not just
+        # assign RHS to LHS!  However, we want to roll in '@all' configs also
+        # into the actual $repo; there's no need to preserve the distinction
+        map { $git_configs{$repo}{$_} = $git_configs{$r}{$_} } keys %{$git_configs{$r}} if $git_configs{$r};
 
         for my $u ('@all', "$gl_user - wild", @user_plus, keys %perm_cats) {
             my $du = $gl_user; $du = '@all' if $u eq '@all' or ($perm_cats{$u} || '') eq '@all';
@@ -1173,6 +1202,49 @@ sub ext_cmd_svnserve
     $SVNSERVE =~ s/%u/$ENV{GL_USER}/g;
     exec $SVNSERVE;
     die "svnserve exec failed\n";
+}
+
+# ----------------------------------------------------------------------------
+#       MIRRORING HELPERS
+# ----------------------------------------------------------------------------
+
+sub mirror_mode {
+    my $repo = shift;
+
+    # 'local' is the default if the config is empty or not set
+    my $gmm = `git config --file $REPO_BASE/$repo.git/config --get gitolite.mirror.master` || 'local';
+    chomp $gmm;
+    return 'local' if $gmm eq 'local';
+    return 'master' if $gmm eq ( $GL_HOSTNAME || '' );
+    return "slave of $gmm";
+}
+
+sub mirror_listslaves {
+    my $repo = shift;
+
+    return ( `git config --file $REPO_BASE/$repo.git/config --get gitolite.mirror.slaves` || '' );
+}
+
+# is a redirect ok for this repo from this slave?
+sub mirror_redirectOK {
+    my $repo = shift;
+    my $slave = shift || return 0;
+        # if we don't know who's asking, the answer is "no"
+
+    my $gmrOK = `git config --file $REPO_BASE/$repo.git/config --get gitolite.mirror.redirectOK` || '';
+    chomp $gmrOK;
+    my $slavelist = mirror_listslaves($repo);
+
+    # if gmrOK is 'true', any valid slave can redirect
+    return 1 if $gmrOK eq 'true' and $slavelist =~ /(^|\s)$slave(\s|$)/;
+    # otherwise, gmrOK is a list of slaves who can redirect
+    return 1 if $gmrOK =~ /(^|\s)$slave(\s|$)/;
+
+    return 0;
+
+    # LATER/NEVER: include a call to an external program to override a 'true',
+    # based on, say, the time of day or network load etc.  Cons: shelling out,
+    # deciding the name of the program (yet another rc var?)
 }
 
 # ------------------------------------------------------------------------------
