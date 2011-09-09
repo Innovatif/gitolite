@@ -73,6 +73,7 @@ $GL_WILDREPOS_PERM_CATS = "READERS WRITERS";
 # ------------------------------------------------------------------------------
 $GL_LOGT="/var/log/gitolite/gitolite-%y-%m-%d.log";
 # $GL_PERFLOGT="$GL_ADMINDIR/logs/perf-gitolite-%y-%m.log";
+$REPO_FIND_MAXDEPTH = 3;
 
 # ------------------------------------------------------------------------------
 # variables that should NOT be changed after the install step completes
